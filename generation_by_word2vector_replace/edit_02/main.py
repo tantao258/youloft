@@ -13,13 +13,13 @@ def parse_args():
     # 创建参数解析对象
     parser = argparse.ArgumentParser()
     parser.add_argument('--most_similarity', type=int,
-                        default=2,
+                        default=5,
                         help='most_similarity')
     parser.add_argument('--sentence', type=str,
-                        default="",
+                        default="杨桃儿握着柿饼子拉着她就往后院去，躲过院子里人的视线，拿起柿饼子踮着脚尖就往杨杏儿嘴巴里塞：“姐姐吃。”",
                         help='replace sentence')
     parser.add_argument('--word2vector_model_path', type=str,
-                        default="./word2vector/word2vector.model",
+                        default="./word2vector/word2vec_wx",
                         help='word2vector_model_path')
     return parser.parse_args()
 
@@ -27,10 +27,10 @@ def parse_args():
 def main(args):
 
     # define dot set
-    dot = {"，", "。", "？", "！", "：", "：“", "。”", "？”", "！”"}
+    dot = {"，", "。", "？", "！", "：", "：“", "。”", "？”", "！”", "；", "”", "“"}
     # 加载word2vector模型
-    model = Word2Vec.load(args.word2vector_model_path)
     print("Loaded word2vector model from：{}".format(args.word2vector_model_path))
+    model = Word2Vec.load(args.word2vector_model_path)
 
     # ---------------- get similar word by word2vec for each word  ---------------
     print("Please input sentence you wan to transform!"), exit()if len(args.sentence) == 0 else print("object is generating......")
@@ -50,12 +50,15 @@ def main(args):
     # ----------------  create new sentence by similar words  ----------------------
     new_sentence_list = []
     for i in range(len(similarity_words_list)):
-        new_sentence_list.append(sample(similarity_words_list[i], 1)[0][0])
+        temp = sample(similarity_words_list[i], 1)[0][0]
+        if temp in dot:
+            new_sentence_list.append(string[i])
+        else:
+            new_sentence_list.append(temp)
     # trans list to string
     new_sentence = "".join(new_sentence_list)
     print("="*200)
     print("|".join(string))
-    print("-"*200)
     print("|".join(new_sentence_list))
     print("=" * 200)
     print(new_sentence)
