@@ -17,7 +17,7 @@ def parse_args():
                         default="HanLP_segment",
                         help='sentence_method:NLP_segment or HanLP_segment')
     parser.add_argument('--word2vector_model_path', type=str,
-                        default="./word2vector/word2vec_wx",
+                        default="E:/Pycharm/wiki_word2vecter/model/wiki_word2vectoe.model",
                         help='word2vector_model_path')
     return parser.parse_args()
 
